@@ -18,6 +18,7 @@ const Nurse = () => {
     alert('Details Authenticated, Account Has Been Created');
   };
 
+
   const [fontsLoaded] = useFonts({
     CairoMed: Cairo_500Medium,
     CairoLite: Cairo_300Light,
@@ -39,7 +40,13 @@ const Nurse = () => {
 
   return (
     <ScrollView style={styles.container}>
+
+      <View style={styles.header}>
+        <Text style={styles.title}>Hello, Yousef Masoudpoor!</Text>
+      </View>   
+
       {/* Create Patient Account Section */}
+      <View style={styles.box}> 
       <Text style={styles.title}>Create Patient Account</Text>
       
       {/* Input Fields for Creating Account */}
@@ -72,12 +79,16 @@ const Nurse = () => {
         placeholder="Confirm Patient MRN"
         keyboardType="numeric"
       />
+
       
       <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
         <Text style={styles.buttonText}>Create Account</Text>
       </TouchableOpacity>
+      </View>
 
       {/* Search Patient Section */}
+
+      <View style={styles.box}> 
       <Text style={[styles.title, { marginTop: 40 }]}>Search Patient</Text>
       
       <TextInput
@@ -100,15 +111,34 @@ const Nurse = () => {
           <Text>Modules Completed Today: {patientInfo.completedToday}</Text>
         </View>
       )}
+
+</View> 
+     
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  box: {
+    padding: 20,
+    margin: 5,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    marginBottom: 10,
+  },
   container: {
     flex: 1,
     padding: 20,
     backgroundColor: '#FFF',
+    height: '110vh',
+  },
+  header: {
+    textAlign: 'center',
   },
   title: {
     fontSize: 34,
