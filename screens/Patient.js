@@ -8,6 +8,15 @@ import { useNavigation } from '@react-navigation/native';
 export default function PatientPage() {
   const navigation = useNavigation();
   const [orientation, setOrientation] = useState('portrait');
+  const [change1, setChange1] = useState(true);
+  const [change2, setChange2] = useState(true);
+  const [change3, setChange3] = useState(true);
+  const [bubble1, setBubble1] = useState(0);
+  const [bubble2, setBubble2] = useState(0);
+  const [count, setCount] = useState(0);
+  const [words, setWords] = useState(0);
+  const [breathe, setBreathe] = useState(0);
+  const [yoga, setYoga] = useState(0);
 
   const patientInfo = {
     name: "John Doe",
@@ -19,14 +28,29 @@ export default function PatientPage() {
 
   const handleWords = () => {
     navigation.navigate("Words");
-  };
-
-  const handleYoga = () => {
-    navigation.navigate("Yoga");
+    setChange1(false);
+    setBubble1(prevBubble => prevBubble + 33);
+    setBubble2(prevBubble => prevBubble + 3);
+    setCount(prevCount => (prevCount + 1));
+    setWords(prevWords => (prevWords = words + 1));
   };
 
   const handleBreathe = () => {
     navigation.navigate("Breathe");
+    setChange2(false);
+    setBubble1(prevBubble => prevBubble + 33);
+    setBubble2(prevBubble => prevBubble + 3);
+    setCount(prevCount => (prevCount + 1));
+    setBreathe(prevBreathe => (prevBreathe + 1));
+  };
+
+  const handleYoga = () => {
+    navigation.navigate("Yoga");
+    setChange3(false);
+    setBubble1(prevBubble => prevBubble + 33);
+    setBubble2(prevBubble => prevBubble + 3);
+    setCount(prevCount => (prevCount + 1));
+    setYoga(prevYoga => (prevYoga + 1));
   };
 
   const [fontsLoaded] = useFonts({
@@ -41,10 +65,12 @@ export default function PatientPage() {
     };
 
     Dimensions.addEventListener('change', updateLayout);
-    updateLayout();
-
     return () => Dimensions.removeEventListener('change', updateLayout);
   }, []);
+
+  if (!fontsLoaded) {
+    return <View><Text>Loading...</Text></View>;
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -61,38 +87,50 @@ export default function PatientPage() {
         </Text>
       </View>
 
-      <View style={[styles.MainContainer, {flexDirection: orientation === 'portrait' ? 'column' : 'row'}]}>
+      <View style={[styles.mainContainer, {flexDirection: orientation === 'portrait' ? 'row' : 'column'}]}>
         <View style={styles.infoContainer}>
           <Text style={styles.detailHeader}>Daily Progress</Text>
-          <Text style={styles.detail}>You have completed {patientInfo.dailyModules} modules today</Text>
-          <Text style={styles.detail}>Today's progress: {patientInfo.dailyModules}% finished</Text>
-          <Progress size={150} progress={0}/>
+          <Text style={styles.detail}>You have completed {count} modules today</Text>
+          <Text style={styles.detail}>Today's progress: {bubble1}% finished</Text>
+          <Progress size={150} progress={bubble1}/>
           <View style={styles.blueLine}></View>
           <Text style={[styles.detailHeader, styles.helper]}>Today's Modules</Text>
-          <Text style={styles.detail}>Self Radiance ✨</Text>
-          <Text style={styles.detail}>Serenity Breathwork 🌬️</Text>
-          <Text style={styles.detail}>ZenFlow Yoga 🧘</Text>
+          { change1 === false && change2 === false && change3 === false ? 
+          <>
+           <Text style={styles.detail}>All Modules Complete ✅</Text>
+           </>
+           :
+           <>
+          <Text style={styles.detail}>{change1 ? 'Self Radiance ✨' : 'Module 1: ✅'}</Text>
+          <Text style={styles.detail}>{change2 ? 'Serenity Breathwork 🌬️' : 'Module 2: ✅'}</Text>
+          <Text style={styles.detail}> {change3 ? 'ZenFlow Yoga 🧘' : 'Module 3: ✅'}</Text>
+          </>
+           }
         </View>
 
-        <View style={styles.infoContainer}>
-          <Text style={[styles.detailHeader, styles.placeholder]}> Select A Module</Text>
-          <ThemedButton onPress={handleWords} style={styles.startButton} name="rick" type="primary">Start Self Radiance</ThemedButton>
-          <View style={styles.whiteLine}></View>
-          <ThemedButton onPress={handleBreathe} style={styles.startButton} name="rick" type="primary">Start Serenity Breathwork</ThemedButton>
-          <View style={styles.whiteLine}></View>
-          <ThemedButton onPress={handleYoga} style={styles.startButton} name="rick" type="primary">Start ZenFlow Yoga</ThemedButton>
-        </View>
+        {
+          change1 === false && change2 === false && change3 === false ? null : (
+            <View style={styles.infoContainer}>
+              <Text style={[styles.detailHeader, styles.placeholder]}>Select A Module</Text>
+              {change1 && <ThemedButton onPress={handleWords} style={styles.startButton} name="rick" type="primary">Start Self Radiance</ThemedButton>}
+              <View style={styles.whiteLine}></View>
+              {change2 && <ThemedButton onPress={handleBreathe} style={styles.startButton} name="rick" type="primary">Start Serenity Breathwork</ThemedButton>}
+              <View style={styles.whiteLine}></View>
+              {change3 && <ThemedButton onPress={handleYoga} style={styles.startButton} name="rick" type="primary">Start ZenFlow Yoga</ThemedButton>}
+            </View>
+          )
+        }
 
         <View style={styles.infoContainer}>
           <Text style={styles.detailHeader}>Recovery Progress</Text>
-          <Text style={styles.detail}>You have completed {patientInfo.completedModules} modules all time</Text>
-          <Text style={styles.detail}>All time progress: {patientInfo.completedModules}%</Text>
-          <Progress size={150} progress={0}/>
+          <Text style={styles.detail}>You have completed {count} modules all time</Text>
+          <Text style={styles.detail}>All time progress: {bubble2}%</Text>
+          <Progress size={150} progress={bubble2}/>
           <View style={styles.blueLine}></View>
           <Text style={[styles.detailHeader, styles.helper]}>Total completed modules</Text>
-          <Text style={styles.detail}>Words of affirmations: 0</Text>
-          <Text style={styles.detail}>Breathing Exercises: 0</Text>
-          <Text style={styles.detail}>Yoga & Meditation: 0</Text>
+          <Text style={styles.detail}>Words of affirmations: {words}</Text>
+          <Text style={styles.detail}>Breathing Exercises: {breathe}</Text>
+          <Text style={styles.detail}>Yoga & Meditation: {yoga}</Text>
         </View>
       </View>
     </ScrollView>
@@ -125,10 +163,10 @@ const styles = StyleSheet.create({
     color: '#0077a8',
     fontFamily: 'CairoMed',
   },
-  MainContainer: {
+  mainContainer: {
     alignContent: 'center',
     justifyContent: 'center',
-},
+  },
   infoContainer: {
     padding: 20,
     margin: 20,
@@ -143,10 +181,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  QuoteBox: {
-    alignItems: "center",
-  },
-  detailHeader:{
+  detailHeader: {
     fontFamily: 'CairoMed',
     fontSize: 27,
     color: '#0077a8',
@@ -160,6 +195,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 25,
   },
+  bold: {
+    fontWeight: 'bold',
+  },
+  QuoteBox: {
+    alignItems: "center",
+  },
   QuoteDetail: {
     fontSize: 20,
     textAlign: 'center',
@@ -172,9 +213,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     alignSelf: 'center',
   },
-  placeholder: {
-    marginBottom: 10,
-  },
   whiteLine: {
     height: 7,
     borderRadius: 100,
@@ -182,5 +220,11 @@ const styles = StyleSheet.create({
     width: '90%',
     marginVertical: 10,
     alignSelf: 'center',
-  }
+  },
+  startButton: {
+    // Define your startButton styles here
+  },
+  placeholder: {
+    marginBottom: 10,
+  },
 });

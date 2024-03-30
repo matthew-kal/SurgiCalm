@@ -73,7 +73,7 @@ export default function LoginBox({ navigation }) {
     <ScrollView style={styles.scrollContainer}>
       <View style={styles.container}>
         <View style={styles.logoContainer}>
-          <Image source={require('../hackensack.png')} style={styles.logoImage} />
+          <Image source={require('../hackensack.jpg')} style={styles.logoImage} />
           <Image source={require('../MMP.png')} style={styles.logoImageRight} />
         </View>
 
