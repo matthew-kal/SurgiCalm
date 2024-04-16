@@ -5,7 +5,7 @@ import { useFonts, Cairo_500Medium } from '@expo-google-fonts/cairo';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import { useNavigation } from '@react-navigation/native';
 
-const Yoga = () => {
+const Workout = () => {
   const [fontsLoaded] = useFonts({
     CairoMed: Cairo_500Medium,
   });
@@ -26,7 +26,7 @@ const Yoga = () => {
     };
   }, []);
 
-  const youtubeVideoId = "MmFZ_aqNX90";
+  const youtubeVideoId = "5UKBmjrCXTM";
   const videoEmbedURL = `https://www.youtube.com/embed/${youtubeVideoId}`;
 
   const isTablet = currentDimensions.width / currentDimensions.height < 0.75 && Math.max(currentDimensions.width, currentDimensions.height) > 800;
@@ -49,7 +49,7 @@ const Yoga = () => {
     <ScrollView style={styles.main}>
       <View style={styles.container}>
         <View style={styles.videoContainer}>
-          <Text style={styles.header}>ZenFlow Yoga 🧘</Text>
+          <Text style={styles.header}>Workout 🏃</Text>
           <WebView 
             style={[styles.video, videoSize]}
             javaScriptEnabled={true}
@@ -117,7 +117,13 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Yoga;
+export default Workout;
+
+
+
+
+
+
 
 
 

@@ -5,6 +5,7 @@ import Patient from "./screens/Patient";
 import Words from './screens/Words';
 import Yoga from './screens/Yoga';
 import Breathe from './screens/Breathe';
+import Workout from './screens/Workout';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator} from "@react-navigation/native-stack";
 
@@ -13,17 +14,17 @@ const Stack = createNativeStackNavigator()
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+       <Stack.Navigator>
         <Stack.Screen name="Select Account Type" component={Login}/>
         <Stack.Screen name="Nurse" component={Nurse} options={{ headerBackTitle: 'Logout' }}/>
         <Stack.Screen name="Patient" component={Patient} options={{ headerBackTitle: 'Logout' }}/>
         <Stack.Screen name="Words" component={Words} options={{ headerBackTitle: 'Back' }}/>
         <Stack.Screen name="Breathe" component={Breathe} options={{ headerBackTitle: 'Back' }}/>
         <Stack.Screen name="Yoga" component={Yoga} options={{ headerBackTitle: 'Back' }}/>
+        <Stack.Screen name="Workout" component={Workout} options={{ headerBackTitle: 'Back' }}/>
     </Stack.Navigator>
     </NavigationContainer>
   );
  
-
 }
 

@@ -64,10 +64,10 @@ export default function LoginBox({ navigation }) {
     CairoLite: Cairo_300Light,
   });
 
-  // Check if the font is loaded before rendering the component
   if (!fontsLoaded) {
-    return null; // Return null or a loading indicator while the font is loading
+    return null; 
   }
+  
 
   return (
     <ScrollView style={styles.scrollContainer}>
@@ -85,9 +85,9 @@ export default function LoginBox({ navigation }) {
           {/* Nurse Login Form */}
 
           <TouchableOpacity style={styles.loginBtn} onPress={handleNurse}>
-            <Text style={styles.btnText}>Caregiver Login 🩺</Text>
-            <Text style={styles.secondBtnText}> If you are a professional, please click here.</Text>
+            <Text style={styles.btnTxtUpper}>Caregiver Login 🩺</Text>
           </TouchableOpacity>
+          <Text style={styles.btnTxtLower}> If you are a professional, please click here.</Text>
           {showNurseForm && (
             <View style={styles.fieldsContainer}>
               <TextInput style={styles.input} placeholder="Nurse Username" onFocus={viewHelper} onBlur={viewHelper} />
@@ -105,9 +105,9 @@ export default function LoginBox({ navigation }) {
 
           {/* Patient Login Form */}
           <TouchableOpacity style={styles.loginBtn} onPress={handlePatient}>
-            <Text style={styles.btnText}>Patient Login 🩹</Text>
-            <Text style={styles.secondBtnText}> If you are receiving care, please click here.</Text>
+            <Text style={styles.btnTxtUpper}>Patient Login 🩹</Text>
           </TouchableOpacity>
+          <Text style={styles.btnTxtLower}> If you are receiving care, please click here.</Text>
           {showPatientForm && (
             <View style={styles.fieldsContainer}>
               <TextInput style={styles.input} placeholder="Patient MRN" onFocus={viewHelper} onBlur={viewHelper} />
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 20,
-    marginBottom: 10,
+    marginBottom: 20,
     elevation: 3, // Add elevation for shadow effect
   },
   finalLoginBtn: {
@@ -180,18 +180,21 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     elevation: 3, // Add elevation for shadow effect
   },
-  btnText: {
+  btnTxtUpper: {
+    textAlign: 'center',
+    fontFamily: 'CairoMed',
     color: 'white',
-    fontSize: 28,
-    padding: 4,
+    fontSize: 30,
   },
-  secondBtnText: {
-    color: 'white',
-    fontSize: 15,
+  btnTxtLower: {
+    textAlign: 'center',
+    fontFamily: 'CairoLite',
+    color: 'black',
+    fontSize: 20,
   },
   fieldsContainer: {
     width: '80%',
-    marginTop: 10,
+    margin: 10,
   },
   input: {
     height: 40,

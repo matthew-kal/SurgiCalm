@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { useFonts, Cairo_500Medium, Cairo_300Light } from '@expo-google-fonts/cairo';
 import Progress from '../components/progress';
-import { ThemedButton } from "react-native-really-awesome-button";
 import { useNavigation } from '@react-navigation/native';
 
 export default function PatientPage() {
@@ -11,12 +10,14 @@ export default function PatientPage() {
   const [change1, setChange1] = useState(true);
   const [change2, setChange2] = useState(true);
   const [change3, setChange3] = useState(true);
+  const [change4, setChange4] = useState(true);
   const [bubble1, setBubble1] = useState(0);
   const [bubble2, setBubble2] = useState(0);
   const [count, setCount] = useState(0);
   const [words, setWords] = useState(0);
   const [breathe, setBreathe] = useState(0);
   const [yoga, setYoga] = useState(0);
+  const [workout, setWorkout] = useState(0);
 
   const patientInfo = {
     name: "John Doe",
@@ -29,17 +30,17 @@ export default function PatientPage() {
   const handleWords = () => {
     navigation.navigate("Words");
     setChange1(false);
-    setBubble1(prevBubble => prevBubble + 33);
-    setBubble2(prevBubble => prevBubble + 3);
+    setBubble1(prevBubble => prevBubble + 25);
+    setBubble2(prevBubble => prevBubble + 2.5);
     setCount(prevCount => (prevCount + 1));
-    setWords(prevWords => (prevWords = words + 1));
+    setWords(prevWords => (prevWords + 1));
   };
 
   const handleBreathe = () => {
     navigation.navigate("Breathe");
     setChange2(false);
-    setBubble1(prevBubble => prevBubble + 33);
-    setBubble2(prevBubble => prevBubble + 3);
+    setBubble1(prevBubble => prevBubble + 25);
+    setBubble2(prevBubble => prevBubble + 2.5);
     setCount(prevCount => (prevCount + 1));
     setBreathe(prevBreathe => (prevBreathe + 1));
   };
@@ -47,10 +48,19 @@ export default function PatientPage() {
   const handleYoga = () => {
     navigation.navigate("Yoga");
     setChange3(false);
-    setBubble1(prevBubble => prevBubble + 33);
-    setBubble2(prevBubble => prevBubble + 3);
+    setBubble1(prevBubble => prevBubble + 25);
+    setBubble2(prevBubble => prevBubble + 2.5);
     setCount(prevCount => (prevCount + 1));
     setYoga(prevYoga => (prevYoga + 1));
+  };
+
+  const handleExersize = () => {
+    navigation.navigate("Workout");
+    setChange4(false);
+    setBubble1(prevBubble => prevBubble + 25);
+    setBubble2(prevBubble => prevBubble + 2.5);
+    setCount(prevCount => (prevCount + 1));
+    setWorkout(prevWorkout => (prevWorkout + 1));
   };
 
   const [fontsLoaded] = useFonts({
@@ -75,8 +85,8 @@ export default function PatientPage() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.name}>Hello, {patientInfo.name}!</Text>
-        <Text style={styles.MRN}>MRN: {patientInfo.MRN}</Text>
+        <Text style={styles.name}>Hello, John Doe!</Text>
+        <Text style={styles.MRN}>MRN: 1234567</Text>
       </View>
 
       <View style={[styles.infoContainer, styles.QuoteBox]}>
@@ -95,7 +105,8 @@ export default function PatientPage() {
           <Progress size={150} progress={bubble1}/>
           <View style={styles.blueLine}></View>
           <Text style={[styles.detailHeader, styles.helper]}>Today's Modules</Text>
-          { change1 === false && change2 === false && change3 === false ? 
+          
+          { change1 === false && change2 === false && change3 === false && change4 === false ?
           <>
            <Text style={styles.detail}>All Modules Complete ✅</Text>
            </>
@@ -104,22 +115,38 @@ export default function PatientPage() {
           <Text style={styles.detail}>{change1 ? 'Self Radiance ✨' : 'Module 1: ✅'}</Text>
           <Text style={styles.detail}>{change2 ? 'Serenity Breathwork 🌬️' : 'Module 2: ✅'}</Text>
           <Text style={styles.detail}> {change3 ? 'ZenFlow Yoga 🧘' : 'Module 3: ✅'}</Text>
+          <Text style={styles.detail}> {change4 ? 'Workout 🏃' : 'Module 4: ✅'}</Text>
           </>
            }
         </View>
 
         {
-          change1 === false && change2 === false && change3 === false ? null : (
+          change1 === false && change2 === false && change3 === false && change4 === false ? null : (
             <View style={styles.infoContainer}>
               <Text style={[styles.detailHeader, styles.placeholder]}>Select A Module</Text>
-              {change1 && <ThemedButton onPress={handleWords} style={styles.startButton} name="rick" type="primary">Start Self Radiance</ThemedButton>}
+
+              {change1 && <TouchableOpacity onPress={handleWords} style={styles.startButton}>
+                <Text style={styles.buttonText}>Start Self Radiance</Text>
+              </TouchableOpacity>}
               <View style={styles.whiteLine}></View>
-              {change2 && <ThemedButton onPress={handleBreathe} style={styles.startButton} name="rick" type="primary">Start Serenity Breathwork</ThemedButton>}
+
+              {change2 && <TouchableOpacity onPress={handleBreathe} style={styles.startButton}>
+                <Text style={styles.buttonText}>Start Serenity Breathwork</Text>
+              </TouchableOpacity>}
               <View style={styles.whiteLine}></View>
-              {change3 && <ThemedButton onPress={handleYoga} style={styles.startButton} name="rick" type="primary">Start ZenFlow Yoga</ThemedButton>}
+
+              {change3 && <TouchableOpacity onPress={handleYoga} style={styles.startButton}>
+                <Text style={styles.buttonText}>Start ZenFlow Yoga</Text>
+              </TouchableOpacity>}
+              <View style={styles.whiteLine}></View>
+
+              {change4 && <TouchableOpacity onPress={handleExersize} style={styles.startButton}>
+                <Text style={styles.buttonText}>Start Workout</Text>
+              </TouchableOpacity>}
             </View>
-          )
-        }
+        )
+       }
+
 
         <View style={styles.infoContainer}>
           <Text style={styles.detailHeader}>Recovery Progress</Text>
@@ -131,6 +158,7 @@ export default function PatientPage() {
           <Text style={styles.detail}>Words of affirmations: {words}</Text>
           <Text style={styles.detail}>Breathing Exercises: {breathe}</Text>
           <Text style={styles.detail}>Yoga & Meditation: {yoga}</Text>
+          <Text style={styles.detail}>Workouts: {workout}</Text>
         </View>
       </View>
     </ScrollView>
@@ -222,9 +250,20 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   startButton: {
-    // Define your startButton styles here
+    backgroundColor: '#0077a8',
+    padding: 10,
+    borderRadius: 20,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontFamily: 'CairoMed',
   },
   placeholder: {
     marginBottom: 10,
   },
 });
+

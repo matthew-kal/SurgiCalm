@@ -15,13 +15,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "$(PRODUCT_NAME) needs access to the camera",
+        "NSPhotoLibraryAddUsageDescription": "$(PRODUCT_NAME) needs access to save photos",
+        "NSMicrophoneUsageDescription": "$(PRODUCT_NAME) needs access to the microphone"
+      },
+      "bundleIdentifier": "com.anonymous.SurgiCalm"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.SurgiCalm"
     },
     "web": {
       "favicon": "./assets/favicon.png"
