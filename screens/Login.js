@@ -3,7 +3,9 @@ import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, TextInput,
 import { useFonts, Cairo_500Medium, Cairo_300Light } from '@expo-google-fonts/cairo'; 
 
 export default function LoginBox({ navigation }) {
+  const [showLwrTxtNurse, setShowLwrTxtNurse] = useState(true);
   const [showNurseForm, setShowNurseForm] = useState(false);
+  const [showLwrTxtPatient, setShowLwrTxtPatient] = useState(true);
   const [showPatientForm, setShowPatientForm] = useState(false);
   const [renderView, setRenderView] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -28,6 +30,8 @@ export default function LoginBox({ navigation }) {
   };
 
   const handleNurse = () => {
+    setShowLwrTxtNurse(!showLwrTxtNurse);
+    setShowLwrTxtPatient(true);
     setShowNurseForm(!showNurseForm);
     setShowPatientForm(false);
   };
@@ -38,6 +42,8 @@ export default function LoginBox({ navigation }) {
   };
 
   const handlePatient = () => {
+    setShowLwrTxtPatient(!showLwrTxtPatient);
+    setShowLwrTxtNurse(true);
     setShowPatientForm(!showPatientForm);
     setShowNurseForm(false);
   };
@@ -71,7 +77,10 @@ export default function LoginBox({ navigation }) {
 
   return (
     <ScrollView style={styles.scrollContainer}>
-      <View style={styles.container}>
+      <View 
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 500 }} // Adjust paddingBottom to allow for more scrolling
+      >
         <View style={styles.logoContainer}>
           <Image source={require('../hackensack.jpg')} style={styles.logoImage} />
           <Image source={require('../MMP.png')} style={styles.logoImageRight} />
@@ -87,7 +96,9 @@ export default function LoginBox({ navigation }) {
           <TouchableOpacity style={styles.loginBtn} onPress={handleNurse}>
             <Text style={styles.btnTxtUpper}>Caregiver Login 🩺</Text>
           </TouchableOpacity>
-          <Text style={styles.btnTxtLower}> If you are a professional, please click here.</Text>
+          {showLwrTxtNurse && (
+            <Text style={styles.btnTxtLower}> If you are a professional, please click here.</Text>
+          )}
           {showNurseForm && (
             <View style={styles.fieldsContainer}>
               <TextInput style={styles.input} placeholder="Nurse Username" onFocus={viewHelper} onBlur={viewHelper} />
@@ -107,7 +118,9 @@ export default function LoginBox({ navigation }) {
           <TouchableOpacity style={styles.loginBtn} onPress={handlePatient}>
             <Text style={styles.btnTxtUpper}>Patient Login 🩹</Text>
           </TouchableOpacity>
-          <Text style={styles.btnTxtLower}> If you are receiving care, please click here.</Text>
+          {showLwrTxtPatient && (
+            <Text style={styles.btnTxtLower}> If you are receiving care, please click here.</Text>
+          )}
           {showPatientForm && (
             <View style={styles.fieldsContainer}>
               <TextInput style={styles.input} placeholder="Patient MRN" onFocus={viewHelper} onBlur={viewHelper} />

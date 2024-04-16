@@ -83,7 +83,10 @@ export default function PatientPage() {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView 
+    style={styles.container}
+    contentContainerStyle={{ paddingBottom: 400 }} // Adjust paddingBottom to allow for more scrolling
+    >
       <View style={styles.header}>
         <Text style={styles.name}>Hello, John Doe!</Text>
         <Text style={styles.MRN}>MRN: 1234567</Text>
@@ -222,6 +225,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     textAlign: 'center',
     lineHeight: 25,
+    fontFamily: 'CairoLite',
   },
   bold: {
     fontWeight: 'bold',
@@ -232,6 +236,7 @@ const styles = StyleSheet.create({
   QuoteDetail: {
     fontSize: 20,
     textAlign: 'center',
+    fontFamily: 'CairoLite',
   },
   blueLine: {
     height: 4,

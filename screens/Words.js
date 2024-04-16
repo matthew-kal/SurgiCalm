@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     color: '#000', 
     textAlign: 'center', 
     lineHeight: 45, 
+    fontFamily: 'CairoLite',
   }
 });
 

@@ -39,7 +39,10 @@ const Nurse = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView 
+    style={styles.container}
+    contentContainerStyle={{ paddingBottom: 100 }} // Adjust paddingBottom to allow for more scrolling
+    >
 
       <View style={styles.header}>
         <Text style={styles.title}>Hello, Yousef Masoudpoor!</Text>
