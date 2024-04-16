@@ -64,8 +64,8 @@ const Breathe = () => {
           <ConfettiCannon
             count={200}
             origin={{
-              x: currentDimensions.width / 2, // Center horizontally
-              y: currentDimensions.height // Start from bottom
+              x: currentDimensions.width / 2, 
+              y: currentDimensions.height 
             }}
             ref={confettiRef}
             fallSpeed={1500}
