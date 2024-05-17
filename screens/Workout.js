@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useFonts, Cairo_500Medium } from '@expo-google-fonts/cairo';
 import ConfettiCannon from 'react-native-confetti-cannon';
@@ -11,28 +11,11 @@ const Workout = () => {
   });
 
   const [trigger, setTrigger] = useState(false);
-  const [currentDimensions, setCurrentDimensions] = useState(Dimensions.get('window'));
   const confettiRef = useRef();
   const navigation = useNavigation();
 
-  useEffect(() => {
-    const handleDimensionsChange = ({ window }) => {
-      setCurrentDimensions(window);
-    };
-
-    Dimensions.addEventListener('change', handleDimensionsChange);
-    return () => {
-      Dimensions.removeEventListener('change', handleDimensionsChange);
-    };
-  }, []);
-
   const youtubeVideoId = "5UKBmjrCXTM";
   const videoEmbedURL = `https://www.youtube.com/embed/${youtubeVideoId}`;
-
-  const isTablet = currentDimensions.width / currentDimensions.height < 0.75 && Math.max(currentDimensions.width, currentDimensions.height) > 800;
-  const videoSize = isTablet
-    ? { width: currentDimensions.width * 0.6, height: currentDimensions.height * 0.3 }
-    : { width: currentDimensions.width * 0.7, height: currentDimensions.width * 0.7 * (9 / 16) };
 
   const handleCompleteModule = () => {
     setTrigger(true);  // Start confetti on button click
@@ -51,7 +34,7 @@ const Workout = () => {
         <View style={styles.videoContainer}>
           <Text style={styles.header}>Workout 🏃</Text>
           <WebView 
-            style={[styles.video, videoSize]}
+            style={styles.video}
             javaScriptEnabled={true}
             domStorageEnabled={true}
             source={{ uri: videoEmbedURL }}
@@ -64,8 +47,8 @@ const Workout = () => {
           <ConfettiCannon
             count={200}
             origin={{
-              x: currentDimensions.width / 2, // Center horizontally
-              y: currentDimensions.height // Start from bottom
+              x: 0, // Center horizontally
+              y: 0 // Start from bottom
             }}
             ref={confettiRef}
             fallSpeed={1500}
@@ -97,6 +80,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   video: {
+    width: 320, // Adjust width as needed
+    height: 180, // Adjust height as needed
     borderRadius: 10, 
     overflow: 'hidden', 
     borderColor: '#0077a8', 
@@ -118,6 +103,7 @@ const styles = StyleSheet.create({
 });
 
 export default Workout;
+
 
 
 

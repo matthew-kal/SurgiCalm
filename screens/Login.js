@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Dimensions, TouchableOpacity, Image, TextInput, Animated, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Animated, ScrollView } from 'react-native';
 import { useFonts, Cairo_500Medium, Cairo_300Light } from '@expo-google-fonts/cairo'; 
 
 export default function LoginBox({ navigation }) {

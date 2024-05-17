@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useFonts, Cairo_500Medium, Cairo_300Light } from '@expo-google-fonts/cairo';
-import Progress from '../components/progress';
 import { useNavigation } from '@react-navigation/native';
+import * as Progress from 'react-native-progress';
 
 export default function PatientPage() {
   const navigation = useNavigation();
-  const [orientation, setOrientation] = useState('portrait');
   const [change1, setChange1] = useState(true);
   const [change2, setChange2] = useState(true);
   const [change3, setChange3] = useState(true);
@@ -18,14 +17,6 @@ export default function PatientPage() {
   const [breathe, setBreathe] = useState(0);
   const [yoga, setYoga] = useState(0);
   const [workout, setWorkout] = useState(0);
-
-  const patientInfo = {
-    name: "John Doe",
-    dailyModules: 0,
-    completedModules: 0,
-    incompleteModules: 35,
-    MRN: 1234567,
-  };
 
   const handleWords = () => {
     navigation.navigate("Words");
@@ -68,24 +59,14 @@ export default function PatientPage() {
     CairoLite: Cairo_300Light,
   });
 
-  useEffect(() => {
-    const updateLayout = () => {
-      const { width, height } = Dimensions.get('window');
-      setOrientation(width < height ? 'portrait' : 'landscape');
-    };
-
-    Dimensions.addEventListener('change', updateLayout);
-    return () => Dimensions.removeEventListener('change', updateLayout);
-  }, []);
-
   if (!fontsLoaded) {
     return <View><Text>Loading...</Text></View>;
   }
 
   return (
     <ScrollView 
-    style={styles.container}
-    contentContainerStyle={{ paddingBottom: 400 }} // Adjust paddingBottom to allow for more scrolling
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 400 }} // Adjust paddingBottom to allow for more scrolling
     >
       <View style={styles.header}>
         <Text style={styles.name}>Hello, John Doe!</Text>
@@ -100,27 +81,26 @@ export default function PatientPage() {
         </Text>
       </View>
 
-      <View style={[styles.mainContainer, {flexDirection: orientation === 'portrait' ? 'row' : 'column'}]}>
+      <View style={styles.mainContainer}>
         <View style={styles.infoContainer}>
           <Text style={styles.detailHeader}>Daily Progress</Text>
           <Text style={styles.detail}>You have completed {count} modules today</Text>
-          <Text style={styles.detail}>Today's progress: {bubble1}% finished</Text>
-          <Progress size={150} progress={bubble1}/>
+          <Progress.Circle thickness={6} showsText={true} size={150} progress={bubble1 / 100}/>
           <View style={styles.blueLine}></View>
           <Text style={[styles.detailHeader, styles.helper]}>Today's Modules</Text>
           
           { change1 === false && change2 === false && change3 === false && change4 === false ?
           <>
-           <Text style={styles.detail}>All Modules Complete ✅</Text>
-           </>
-           :
-           <>
-          <Text style={styles.detail}>{change1 ? 'Self Radiance ✨' : 'Module 1: ✅'}</Text>
-          <Text style={styles.detail}>{change2 ? 'Serenity Breathwork 🌬️' : 'Module 2: ✅'}</Text>
-          <Text style={styles.detail}> {change3 ? 'ZenFlow Yoga 🧘' : 'Module 3: ✅'}</Text>
-          <Text style={styles.detail}> {change4 ? 'Workout 🏃' : 'Module 4: ✅'}</Text>
+            <Text style={styles.detail}>All Modules Complete ✅</Text>
           </>
-           }
+          :
+          <>
+            <Text style={styles.detail}>{change1 ? 'Self Radiance ✨' : 'Module 1: ✅'}</Text>
+            <Text style={styles.detail}>{change2 ? 'Serenity Breathwork 🌬️' : 'Module 2: ✅'}</Text>
+            <Text style={styles.detail}> {change3 ? 'ZenFlow Yoga 🧘' : 'Module 3: ✅'}</Text>
+            <Text style={styles.detail}> {change4 ? 'Workout 🏃' : 'Module 4: ✅'}</Text>
+          </>
+          }
         </View>
 
         {
@@ -147,15 +127,13 @@ export default function PatientPage() {
                 <Text style={styles.buttonText}>Start Workout</Text>
               </TouchableOpacity>}
             </View>
-        )
-       }
-
+          )
+        }
 
         <View style={styles.infoContainer}>
           <Text style={styles.detailHeader}>Recovery Progress</Text>
           <Text style={styles.detail}>You have completed {count} modules all time</Text>
-          <Text style={styles.detail}>All time progress: {bubble2}%</Text>
-          <Progress size={150} progress={bubble2}/>
+          <Progress.Circle thickness={6} showsText={true}  size={150} progress={bubble2 / 100}/>
           <View style={styles.blueLine}></View>
           <Text style={[styles.detailHeader, styles.helper]}>Total completed modules</Text>
           <Text style={styles.detail}>Words of affirmations: {words}</Text>
@@ -271,4 +249,5 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
+
 
