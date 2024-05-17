@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Animated, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput, Animated, ScrollView, Dimensions } from 'react-native';
 import { useFonts, Cairo_500Medium, Cairo_300Light } from '@expo-google-fonts/cairo'; 
 
 export default function LoginBox({ navigation }) {
@@ -7,8 +7,27 @@ export default function LoginBox({ navigation }) {
   const [showNurseForm, setShowNurseForm] = useState(false);
   const [showLwrTxtPatient, setShowLwrTxtPatient] = useState(true);
   const [showPatientForm, setShowPatientForm] = useState(false);
-  const [renderView, setRenderView] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  const [dimensions, setDimensions] = useState({
+    window: Dimensions.get('window')
+  });
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener("change", ({ window }) => {
+      setDimensions({ window });
+    });
+    return () => subscription?.remove();
+  }, []);
+
+  const { window } = dimensions;
+  const windowWidth = window.width;
+  const LLsize = windowWidth > 800 ? 120 : 70;
+  const RLsize = windowWidth > 800 ? 200 : 125;
+  const RLmargin = windowWidth > 800 ? 0 : 10;
+  const scText = windowWidth > 400 ? 50 : 35;
+  const loginWidth = windowWidth > 400 ? '80%' : '60%'
+  const logButText = windowWidth > 400 ? 30 : 25
 
   function viewHelper() {
     setRenderView(prevState => !prevState);
@@ -35,7 +54,6 @@ export default function LoginBox({ navigation }) {
     setShowNurseForm(!showNurseForm);
     setShowPatientForm(false);
   };
-
 
   const handlePatientLogin = () => {
     navigation.navigate("Patient");
@@ -64,7 +82,6 @@ export default function LoginBox({ navigation }) {
     );
   };
 
-  // Load the Cairo font
   const [fontsLoaded] = useFonts({
     CairoMed: Cairo_500Medium,
     CairoLite: Cairo_300Light,
@@ -73,28 +90,25 @@ export default function LoginBox({ navigation }) {
   if (!fontsLoaded) {
     return null; 
   }
-  
 
   return (
     <ScrollView style={styles.scrollContainer}>
       <View 
-      style={styles.container}
-      contentContainerStyle={{ paddingBottom: 500 }} // Adjust paddingBottom to allow for more scrolling
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: 500 }}
       >
         <View style={styles.logoContainer}>
-          <Image source={require('../hackensack.jpg')} style={styles.logoImage} />
-          <Image source={require('../MMP.png')} style={styles.logoImageRight} />
+          <Image source={require('../hackensack.jpg')} style={{ width: LLsize, height: LLsize, marginTop: RLmargin }} />
+          <Image source={require('../MMP.png')} style={{width: RLsize, height: 100}} />
         </View>
 
         <View style={styles.boxStyle}>
-          <Animated.Text style={[styles.logo, { opacity: fadeAnim, transform: [{ translateX: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [-100, 0] }) }] }]}>
+          <Animated.Text style={[styles.logo, { opacity: fadeAnim, fontSize: scText , transform: [{ translateX: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [-100, 0] }) }] }]}>
             Welcome To <Text style={styles.italicText}>SurgiCalm™</Text>
           </Animated.Text>
 
-          {/* Nurse Login Form */}
-
-          <TouchableOpacity style={styles.loginBtn} onPress={handleNurse}>
-            <Text style={styles.btnTxtUpper}>Caregiver Login 🩺</Text>
+          <TouchableOpacity style={[styles.loginBtn, {width: loginWidth}]} onPress={handleNurse}>
+            <Text style={[styles.btnTxtUpper, {fontSize: logButText}]}>Caregiver Login 🩺</Text>
           </TouchableOpacity>
           {showLwrTxtNurse && (
             <Text style={styles.btnTxtLower}> If you are a professional, please click here.</Text>
@@ -107,16 +121,14 @@ export default function LoginBox({ navigation }) {
             </View>
           )}
 
-          {/* Separator Line and 'or' */}
           <View style={styles.separator}>
             <View style={styles.line}></View>
             <Text style={styles.orText}>OR</Text>
             <View style={styles.line}></View>
           </View>
 
-          {/* Patient Login Form */}
-          <TouchableOpacity style={styles.loginBtn} onPress={handlePatient}>
-            <Text style={styles.btnTxtUpper}>Patient Login 🩹</Text>
+          <TouchableOpacity style={[styles.loginBtn, {width: loginWidth}]} onPress={handlePatient}>
+            <Text style={[styles.btnTxtUpper, {fontSize: logButText}]}>Patient Login 🩹</Text>
           </TouchableOpacity>
           {showLwrTxtPatient && (
             <Text style={styles.btnTxtLower}> If you are receiving care, please click here.</Text>
@@ -127,15 +139,8 @@ export default function LoginBox({ navigation }) {
               <PatientLoginButton onPress={handlePatientLogin} title="Login" />
             </View>
           )}
-          {renderView && <View>
-            <Text>{'\n'}</Text>
-            <Text>{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}</Text>
-            <Text>{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}{'\n'}</Text>
-          </View>}
         </View>
       </View>
-
-
     </ScrollView>
   );
 }
@@ -154,22 +159,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
   },
-  logoImage: {
-    width: 100,
-    height: 100,
-  },
-  logoImageRight: {
-    width: 160,
-    height: 170,
-  },
   logo: {
-    fontSize: 50,
     color: '#2596be',
     marginBottom: 40,
     fontFamily: 'CairoLite',
   },
   italicText: {
-    fontFamily: 'CairoMed', // Apply Cairo font to italicText
+    fontFamily: 'CairoMed',
   },
   loginBtn: {
     width: '80%',
@@ -180,18 +176,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 20,
     marginBottom: 20,
-    elevation: 3, // Add elevation for shadow effect
+    elevation: 3,
   },
   finalLoginBtn: {
     width: '30%',
     backgroundColor: '#0077a8',
     borderRadius: 25,
     height: 40,
-    justifyContent: 'center', // align vertically
-    alignItems: 'center', // align horizontally
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 20,
     marginBottom: 10,
-    elevation: 3, // Add elevation for shadow effect
+    elevation: 3,
   },
   btnTxtUpper: {
     textAlign: 'center',
@@ -251,5 +247,6 @@ const styles = StyleSheet.create({
     display: 'flex',
   },
 });
+
 
 

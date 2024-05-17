@@ -1,22 +1,45 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Dimensions, ScrollView, TouchableOpacity } from 'react-native';
 import { useFonts, Cairo_500Medium, Cairo_300Light } from '@expo-google-fonts/cairo';
 import { useNavigation } from '@react-navigation/native';
 import * as Progress from 'react-native-progress';
 
 export default function PatientPage() {
   const navigation = useNavigation();
+
   const [change1, setChange1] = useState(true);
   const [change2, setChange2] = useState(true);
   const [change3, setChange3] = useState(true);
   const [change4, setChange4] = useState(true);
+
   const [bubble1, setBubble1] = useState(0);
   const [bubble2, setBubble2] = useState(0);
+
   const [count, setCount] = useState(0);
   const [words, setWords] = useState(0);
   const [breathe, setBreathe] = useState(0);
   const [yoga, setYoga] = useState(0);
   const [workout, setWorkout] = useState(0);
+
+  const [dimensions, setDimensions] = React.useState({
+    window : Dimensions.get('window')
+  })
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener("change", ({ window }) => {
+      setDimensions({ window });
+    });
+    return () => subscription?.remove();
+  }, []);
+
+  const {window} = dimensions
+  const windowWidth = window.width
+  const windowHeight = window.height
+  
+  const boxWidth = windowWidth > 1000 ? '60%' : '100%'
+  const buttonWidth = windowWidth > 600 ? '40%' : '100%'
+  const headerText = windowWidth > 600 ? 35 : 25
+
 
   const handleWords = () => {
     navigation.navigate("Words");
@@ -65,12 +88,10 @@ export default function PatientPage() {
 
   return (
     <ScrollView 
-      style={styles.container}
-      contentContainerStyle={{ paddingBottom: 400 }} // Adjust paddingBottom to allow for more scrolling
-    >
+      style={styles.container}    >
       <View style={styles.header}>
-        <Text style={styles.name}>Hello, John Doe!</Text>
-        <Text style={styles.MRN}>MRN: 1234567</Text>
+        <Text style={[styles.header_text, {fontSize: headerText}]}>Hello, John Doe!</Text>
+        <Text style={[styles.header_text, {fontSize: headerText}]}>MRN: 1234567</Text>
       </View>
 
       <View style={[styles.infoContainer, styles.QuoteBox]}>
@@ -81,7 +102,7 @@ export default function PatientPage() {
         </Text>
       </View>
 
-      <View style={styles.mainContainer}>
+      <View style={[styles.mainContainer, {width: boxWidth }]}>
         <View style={styles.infoContainer}>
           <Text style={styles.detailHeader}>Daily Progress</Text>
           <Text style={styles.detail}>You have completed {count} modules today</Text>
@@ -108,22 +129,22 @@ export default function PatientPage() {
             <View style={styles.infoContainer}>
               <Text style={[styles.detailHeader, styles.placeholder]}>Select A Module</Text>
 
-              {change1 && <TouchableOpacity onPress={handleWords} style={styles.startButton}>
+              {change1 && <TouchableOpacity onPress={handleWords} style={[styles.startButton, {width: buttonWidth}]}>
                 <Text style={styles.buttonText}>Start Self Radiance</Text>
               </TouchableOpacity>}
               <View style={styles.whiteLine}></View>
 
-              {change2 && <TouchableOpacity onPress={handleBreathe} style={styles.startButton}>
+              {change2 && <TouchableOpacity onPress={handleBreathe} style={[styles.startButton, {width: buttonWidth}]}>
                 <Text style={styles.buttonText}>Start Serenity Breathwork</Text>
               </TouchableOpacity>}
               <View style={styles.whiteLine}></View>
 
-              {change3 && <TouchableOpacity onPress={handleYoga} style={styles.startButton}>
+              {change3 && <TouchableOpacity onPress={handleYoga} style={[styles.startButton, {width: buttonWidth}]}>
                 <Text style={styles.buttonText}>Start ZenFlow Yoga</Text>
               </TouchableOpacity>}
               <View style={styles.whiteLine}></View>
 
-              {change4 && <TouchableOpacity onPress={handleExersize} style={styles.startButton}>
+              {change4 && <TouchableOpacity onPress={handleExersize} style={[styles.startButton, {width: buttonWidth}]}>
                 <Text style={styles.buttonText}>Start Workout</Text>
               </TouchableOpacity>}
             </View>
@@ -156,7 +177,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: "space-between",
   },
-  name: {
+  header_text: {
     fontSize: 35,
     fontWeight: 'bold',
     marginBottom: 10,
@@ -164,17 +185,13 @@ const styles = StyleSheet.create({
     color: '#0077a8',
     fontFamily: 'CairoMed',
   },
-  MRN: {
-    fontSize: 35,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    marginRight: 4,
-    color: '#0077a8',
-    fontFamily: 'CairoMed',
-  },
   mainContainer: {
     alignContent: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
+    width: '60%',
+    flex: 1, 
+    flexDirection: 'column'
   },
   infoContainer: {
     padding: 20,
@@ -236,7 +253,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#0077a8',
     padding: 10,
     borderRadius: 20,
-    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -244,6 +260,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontFamily: 'CairoMed',
+    textAlign: 'center',
   },
   placeholder: {
     marginBottom: 10,
