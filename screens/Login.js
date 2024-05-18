@@ -26,8 +26,8 @@ export default function LoginBox({ navigation }) {
   const RLsize = windowWidth > 800 ? 200 : 125;
   const RLmargin = windowWidth > 800 ? 0 : 10;
   const scText = windowWidth > 400 ? 50 : 35;
-  const loginWidth = windowWidth > 400 ? '80%' : '60%'
-  const logButText = windowWidth > 400 ? 30 : 25
+  const loginWidth = windowWidth > 400 ? '80%' : '50%'
+  const logButText = windowWidth > 400 ? 30 : 22
 
   function viewHelper() {
     setRenderView(prevState => !prevState);

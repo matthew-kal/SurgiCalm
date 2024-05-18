@@ -151,7 +151,7 @@ export default function PatientPage() {
           )
         }
 
-        <View style={styles.infoContainer}>
+        <View style={[styles.infoContainer, {marginBottom: 50}]}>
           <Text style={styles.detailHeader}>Recovery Progress</Text>
           <Text style={styles.detail}>You have completed {count} modules all time</Text>
           <Progress.Circle thickness={6} showsText={true}  size={150} progress={bubble2 / 100}/>

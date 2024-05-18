@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { useFonts, Cairo_500Medium } from '@expo-google-fonts/cairo'; 
 
 const Words = () => {
@@ -7,12 +7,28 @@ const Words = () => {
     CairoMed: Cairo_500Medium,
   });
 
+  const [dimensions, setDimensions] = React.useState({
+    window: Dimensions.get('window')
+  });
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener("change", ({ window }) => {
+      setDimensions({ window });
+    });
+    return () => subscription?.remove();
+  }, []);
+
+  const { window } = dimensions;
+  const windowWidth = window.width;
+  const wordFont = window.width > 400 ? 25 : 20
+  const wordHeight = window.width > 400 ? 45 : 30
+
 
   return (
     <ScrollView style={styles.scroll} >
         <View style={styles.container}>
         <Text style={[styles.header, fontsLoaded && { fontFamily: 'CairoMed' }]}>Self Radiance ✨</Text>
-        <Text style={styles.paragraph}>
+        <Text style={[styles.paragraph, {fontSize: wordFont, lineHeight: wordHeight}]}>
         Approaching breast cancer treatment can feel overwhelming, yet it's also a step towards reclaiming your health and vitality. As you prepare, imagine embodying the essence of serenity—allowing yourself to be calm and peaceful, even in times of uncertainty. This period is about more than medical preparation; it's about nurturing your inner strength and resilience.
 
         You're embarking on a journey that requires bravery and courage, qualities you already possess in abundance. Let these virtues be your guide, reminding you of your ability to face challenges head-on. Acknowledge the love and support around you, drawing strength from those who care about you.
@@ -45,10 +61,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   paragraph: {
-    fontSize: 25, 
     color: '#000', 
     textAlign: 'center', 
-    lineHeight: 45, 
     fontFamily: 'CairoLite',
   }
 });

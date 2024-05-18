@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useFonts, Cairo_500Medium } from '@expo-google-fonts/cairo';
 import ConfettiCannon from 'react-native-confetti-cannon';
@@ -17,6 +17,21 @@ const Yoga = () => {
   const youtubeVideoId = "MmFZ_aqNX90";
   const videoEmbedURL = `https://www.youtube.com/embed/${youtubeVideoId}`;
 
+  const [dimensions, setDimensions] = React.useState({
+    window: Dimensions.get('window')
+  });
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener("change", ({ window }) => {
+      setDimensions({ window });
+    });
+    return () => subscription?.remove();
+  }, []);
+
+  const { window } = dimensions;
+  const windowWidth = window.width;
+  const videoWidth = window.width > 800 ? 640 : window.width > 500 ? 400 : 300;
+
   const handleCompleteModule = () => {
     setTrigger(true);  // Start confetti on button click
     // Set a timeout to navigate after 2 seconds
@@ -28,13 +43,15 @@ const Yoga = () => {
     }, 2000);
   };
 
+  
+
   return (
     <ScrollView style={styles.main}>
       <View style={styles.container}>
         <View style={styles.videoContainer}>
           <Text style={styles.header}>ZenFlow Yoga 🧘</Text>
           <WebView 
-            style={styles.video}
+            style={[styles.video, { width: videoWidth, height: videoWidth * 0.75 }]}
             javaScriptEnabled={true}
             domStorageEnabled={true}
             source={{ uri: videoEmbedURL }}
@@ -68,7 +85,7 @@ const styles = StyleSheet.create({
     color: '#0077a8', 
     textAlign: 'center', 
     fontFamily: 'CairoMed',
-    marginTop: 25,
+    marginTop: 40,
     marginBottom: 5,
   },
   container: {
@@ -80,12 +97,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   video: {
-    width: 320, // Adjust width as needed
-    height: 180, // Adjust height as needed
+    marginTop: 20,
     borderRadius: 10, 
     overflow: 'hidden', 
     borderColor: '#0077a8', 
     borderWidth: 5,
+    alignSelf: 'center'
   },
   backButton: {
     backgroundColor: '#0077a8',
@@ -103,6 +120,7 @@ const styles = StyleSheet.create({
 });
 
 export default Yoga;
+
 
 
 
